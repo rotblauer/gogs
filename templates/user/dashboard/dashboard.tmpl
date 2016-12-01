@@ -7,6 +7,26 @@
 				{{template "user/dashboard/feeds" .}}
 			</div>
 			<div class="six wide column">
+
+				<!-- xkcd -->
+				<script>
+					$(function () {
+						// xkcd comic of the day json here
+						// http://xkcd.com/info.0.json
+						// {"month": "11", "num": 1766, "link": "", "year": "2016", "news": "", "safe_title": "Apple Spectrum", "transcript": "", "alt": "If I were trapped on a desert island, and could have an unlimited supply of any one type of apple, I'd be like, \"How did this situation happen?\"", "img": "http:\/\/imgs.xkcd.com\/comics\/apple_spectrum.png", "title": "Apple Spectrum", "day": "30"}
+						$.getJSON('http://xkcd.com/info.0.json', function () {
+							console.log('got xkcdjsonreq');
+						}).done(function (data) {
+							$("<h6>").html(data.num + ": " + data.safe_title).appendTo("#xkcd-image");
+							$("<p>").html(data.alt).appendTo("#xkcd-image");
+							$( "<img>" ).attr( "src", data.img ).style.appendTo( "#xkcd-image" );
+						}).fail(function (jqxhr, textStatus, error) {
+							var err = textStatus + ", " + error;
+	    				console.log( "Request Failed: " + err );
+						});	
+					});
+				</script>
+				<div id="xkcd-image"></div>
 				<div class="ui {{if not .ContextUser.IsOrganization}}three{{else}}two{{end}} item tabable menu">
 					<a class="item active" data-tab="repos">{{.i18n.Tr "repository"}}</a>
 					{{if not .ContextUser.IsOrganization}}
